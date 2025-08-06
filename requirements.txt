@@ -1,0 +1,7 @@
+streamlit
+sentence-transformers
+scikit-learn
+PyMuPDF  # for PDF reading
+python-docx  # for .docx reading
+google-generativeai
+python-dotenv
