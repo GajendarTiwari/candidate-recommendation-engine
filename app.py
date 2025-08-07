@@ -4,6 +4,7 @@ from gemini_summary import get_summary, generate_interview_questions
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import TfidfVectorizer
 from dotenv import load_dotenv
+from utils import extract_text  # Import the extract_text function
 
 load_dotenv()
 
@@ -12,7 +13,7 @@ def local_css(file_name):
     with open(file_name) as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-local_css("style.css")
+local_css("style.css")  # Updated path for deployment
 
 st.set_page_config(page_title="Candidate Recommendation Engine", page_icon="📄", layout="centered")
 st.title("🔍 Candidate Recommendation Engine")
@@ -21,15 +22,20 @@ st.markdown("Upload a job description and candidate resumes to find the best mat
 # Input job description
 job_desc = st.text_area("📋 Paste the Job Description", height=200)
 
-# Upload resume files
-uploaded_files = st.file_uploader("📎 Upload Candidate Resumes (.txt)", type=["txt"], accept_multiple_files=True)
+# Upload resume files - Updated to accept multiple formats
+uploaded_files = st.file_uploader(
+    "📎 Upload Candidate Resumes (.txt, .pdf, .docx)", 
+    type=["txt", "pdf", "docx"], 
+    accept_multiple_files=True
+)
 
 # Process and display results
 if st.button("🚀 Recommend Candidates") and job_desc and uploaded_files:
     with st.spinner("Processing resumes and generating recommendations..."):
         resumes = []
         for file in uploaded_files:
-            content = file.read().decode("utf-8")
+            # Use the extract_text function to handle multiple formats
+            content = extract_text(file)
             resumes.append({"name": file.name, "text": content})
 
         # Vectorization
@@ -61,4 +67,3 @@ if st.button("🚀 Recommend Candidates") and job_desc and uploaded_files:
             for q in questions:
                 st.markdown(f"- {q}")
             st.markdown("---")
-
