@@ -12,7 +12,7 @@ def local_css(file_name):
     with open(file_name) as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-local_css(r"C:\Users\Admin\OneDrive\Desktop\123456\untitled\style.css")
+local_css("style.css")
 
 st.set_page_config(page_title="Candidate Recommendation Engine", page_icon="📄", layout="centered")
 st.title("🔍 Candidate Recommendation Engine")
@@ -61,3 +61,4 @@ if st.button("🚀 Recommend Candidates") and job_desc and uploaded_files:
             for q in questions:
                 st.markdown(f"- {q}")
             st.markdown("---")
+
